@@ -6,7 +6,7 @@
 /*   By: ski <ski@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:38:31 by ski               #+#    #+#             */
-/*   Updated: 2022/04/20 17:03:06 by ski              ###   ########.fr       */
+/*   Updated: 2022/04/20 19:30:54 by ski              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,39 +29,60 @@ static void imprime_apres(char *pathname, t_maillon **ptr_env);
 int cd_builtin(char *pathname, t_maillon **ptr_env)
 {
 	t_maillon *temp;
-
+	char cwd[4096];
+	char oldcwd[4096];
+	
+	printf("====================== AVANT ============================\n");
 	print_maillon(ptr_env);
-
-	imprime_avant(pathname, ptr_env);
-
+	printf("\n");
 	// cd [vide] --------------------------------------------------
 	if (pathname == NULL || pathname[0] == '\0')
 	{
 		write(1, CD_MSG_ERR_NO_ARG, ft_strlen(CD_MSG_ERR_NO_ARG));
 		write(1, "\n", 1);
+		write(1, "\n", 1);
 		return (CD_ERROR);
 	}
-	
-	// cd [.] (avec point SIMPLE)  -----------------------------------
+	// ---------------------------------------------------------------
+	// cd [.] (avec SIMPLE point)  -----------------------------------
+	//		1)$OLDPWD = $PWD	
+	// ---------------------------------------------------------------
 	else if (ft_strncmp(pathname, ".", 2)  == 0)
 	{
 		if (chdir(pathname) == CHDIR_ERROR)
 			return (manage_error());
-		//	$OLDPWD = $PWD
+			
+		if(getcwd(cwd, 4096) == NULL)
+			return(manage_error());
+		replace_env_oldpwd(ptr_env, cwd);
 	}
 
 	// ---------------------------------------------------------------
-	// si: [cd .. ]
-	// alors: 
+	// cd [..] (avec DOUBLE point) -----------------------------------
 	//		1) $OLDPWD = $PWD
 	//		2) $PWD = parent directory
 	//		3) cwd = parent directory 
+	// ---------------------------------------------------------------
+	// else if (ft_strncmp(pathname, "..", 3)  == 0)
+	else
+	{
+		if(getcwd(oldcwd, 4096) == NULL)
+			return(manage_error());
+			
+		if (chdir(pathname) == CHDIR_ERROR)
+			return (manage_error());
+			
+		if(getcwd(cwd, 4096) == NULL)
+			return(manage_error());
+		
+		replace_env_oldpwd(ptr_env, oldcwd);
+		replace_env_pwd(ptr_env, cwd);
+	}
 
 	// ---------------------------------------------------------------
-	imprime_apres(pathname, ptr_env);
-
-
-	
+	printf("======================= APRES ===========================\n");
+	print_maillon(ptr_env);
+	printf("\n");
 	// ---------------------------------------------------------------
 	return (CD_NO_ERROR);
 }

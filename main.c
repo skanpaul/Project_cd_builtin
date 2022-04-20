@@ -6,7 +6,7 @@
 /*   By: ski <ski@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 15:59:47 by ski               #+#    #+#             */
-/*   Updated: 2022/04/20 18:01:49 by ski              ###   ########.fr       */
+/*   Updated: 2022/04/20 19:21:18 by ski              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 /* ************************************************************************** */
 #define		SAME_STRING		0
 /* ************************************************************************** */
-#define		MSG_A		"AAA=salut biscuit"
+#define		MSG_A		"AAA=_________________________________________________________"
 #define		MSG_PWD		"PWD=/Users/ski/Documents/8_Experimentation/Project_cd_builtin"
-#define		MSG_B		"BBB=il fait beau aujourd'hui"
-#define		MSG_OLDPWD	"OLDPWD=/Users/ski/Documents/8_Experimentation/Project_cd_builtin"
+#define		MSG_B		"BBB=_________________________________________________________"
+#define		MSG_OLDPWD	"OLDPWD=/Users/ski/Documents/8_Experimentation"
 /* ************************************************************************** */
 int main (int argc, char **argv, char **envp)
 {
@@ -50,19 +50,19 @@ int main (int argc, char **argv, char **envp)
 	maillon_oldpwd.var_env =  strdup(MSG_OLDPWD);
 	// ------------------------------------------------------- 
 
-	print_maillon(&ptr_head);
-	printf("\n");
-	printf("\n");
+	// print_maillon(&ptr_head);
+	// printf("\n");
+	// printf("\n");
 
-	// char *pathname;
-	// pathname = argv[1];
-	// cd_builtin(pathname, &ptr_head);
-
-	replace_env_pwd(&ptr_head, "ZOMBIE");
-	replace_env_oldpwd(&ptr_head, "BANANE");
-	print_maillon(&ptr_head);
-	printf("\n");
-	printf("\n");
+	char *pathname;
+	pathname = argv[1];
+	cd_builtin(pathname, &ptr_head);
+	
+	// replace_env_pwd(&ptr_head, "ZOMBIE");
+	// replace_env_oldpwd(&ptr_head, "BANANE");
+	// print_maillon(&ptr_head);
+	// printf("\n");
+	// printf("\n");
 
 
 
