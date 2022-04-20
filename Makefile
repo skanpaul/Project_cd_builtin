@@ -1,9 +1,9 @@
 NAME	= a.out
 
 CC		= gcc
-CFLAG	= -lreadline
+CFLAG	= 
 
 SRC		= $(wildcard *.c)
 
 all:
-	$(CC) $(CFLAG) $(SRC) -o $(NAME)
+	$(CC) $(CFLAG) $(SRC) -lreadline -L . -lft -o $(NAME)
