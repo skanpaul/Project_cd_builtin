@@ -6,7 +6,7 @@
 /*   By: ski <ski@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 16:00:42 by ski               #+#    #+#             */
-/*   Updated: 2022/04/20 18:03:18 by ski              ###   ########.fr       */
+/*   Updated: 2022/04/20 20:15:11 by ski              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,6 @@
 /* ************************************************************************** */
 typedef struct s_maillon t_maillon;
 /* ************************************************************************** */
-typedef struct s_data
-{
-	
-}	t_data;
-/* ************************************************************************** */
 typedef struct s_maillon
 {
 	char		*var_env;
@@ -45,14 +40,18 @@ typedef struct s_maillon
 	t_maillon	*next;
 }	t_maillon;
 /* ************************************************************************** */
+typedef struct s_data
+{
+	
+}	t_data;
+/* ************************************************************************** */
 int		pwd_builtin(void);
 int		cd_builtin(char *pathname, t_maillon **ptr_head);
 
 /* ************************************************************************** */
-void		print_maillon(t_maillon **ptr_head);
-
-void		replace_env_pwd(t_maillon **ptr_env, char *new_path);
-void		replace_env_oldpwd(t_maillon **ptr_env, char *new_path);
+void	print_maillon(t_maillon **ptr_head);
+void	replace_env_pwd(t_maillon **ptr_env, char *new_path);
+void	replace_env_oldpwd(t_maillon **ptr_env, char *new_path);
 /* ************************************************************************** */
 void	envp_print(char **envp);
 int		envp_get_size(char **envp);
