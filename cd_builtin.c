@@ -6,7 +6,7 @@
 /*   By: ski <ski@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:38:31 by ski               #+#    #+#             */
-/*   Updated: 2022/04/20 19:43:43 by ski              ###   ########.fr       */
+/*   Updated: 2022/04/20 20:11:22 by ski              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,72 +19,24 @@
 #define CHDIR_NO_ERROR	0
 #define CHDIR_ERROR		-1
 /* ************************************************************************** */
-#define MSG_CHDIR				"chdir(): "
-#define MSG_GETCWD				"getcwd(): "
+#define MSG_ERR_GETCWD			"getcwd() "
 /* ************************************************************************** */
 static int manage_error(char *remark);
-static void imprime_avant(char *pathname, t_maillon **ptr_env);
-static void imprime_apres(char *pathname, t_maillon **ptr_env);
-
+static int cd_empty(void);
+static int cd_point(char *pathname, t_maillon **ptr_env);
+static int cd_other();
 /* ************************************************************************** */
 int cd_builtin(char *pathname, t_maillon **ptr_env)
 {
-	t_maillon *temp;
-	char cwd[4096];
-	char oldcwd[4096];
-	
-	printf("====================== AVANT ============================\n");
-	print_maillon(ptr_env);
-	printf("\n");
-	// cd [vide] --------------------------------------------------
 	if (pathname == NULL || pathname[0] == '\0')
-	{
-		write(1, CD_MSG_ERR_NO_ARG, ft_strlen(CD_MSG_ERR_NO_ARG));
-		write(1, "\n", 1);
-		write(1, "\n", 1);
-		return (CD_ERROR);
-	}
-	// ---------------------------------------------------------------
-	// cd [.] (avec SIMPLE point)  -----------------------------------
-	//		1)$OLDPWD = $PWD	
-	// ---------------------------------------------------------------
+		return (cd_empty());
+
 	else if (ft_strncmp(pathname, ".", 2)  == 0)
-	{
-		if (chdir(pathname) == CHDIR_ERROR)
-			return (manage_error(MSG_CHDIR));
-			
-		if(getcwd(cwd, 4096) == NULL)
-			return(manage_error(MSG_GETCWD));
-		replace_env_oldpwd(ptr_env, cwd);
-	}
+		return (cd_point(pathname, ptr_env));
 
-	// ---------------------------------------------------------------
-	// cd [..] (avec DOUBLE point) -----------------------------------
-	//		1) $OLDPWD = $PWD
-	//		2) $PWD = parent directory
-	//		3) cwd = parent directory 
-	// ---------------------------------------------------------------
-	// else if (ft_strncmp(pathname, "..", 3)  == 0)
 	else
-	{
-		if(getcwd(oldcwd, 4096) == NULL)
-			return(manage_error(MSG_GETCWD));
-			
-		if (chdir(pathname) == CHDIR_ERROR)
-			return (manage_error(MSG_CHDIR));
-			
-		if(getcwd(cwd, 4096) == NULL)
-			return(manage_error(MSG_GETCWD));
-		
-		replace_env_oldpwd(ptr_env, oldcwd);
-		replace_env_pwd(ptr_env, cwd);
-	}
+		return (cd_other(pathname, ptr_env));
 
-	// ---------------------------------------------------------------
-	printf("======================= APRES ===========================\n");
-	print_maillon(ptr_env);
-	printf("\n");
-	// ---------------------------------------------------------------
 	return (CD_NO_ERROR);
 }
 
@@ -97,59 +49,46 @@ static int manage_error(char *remark)
 }
 
 /* ************************************************************************** */
-static void imprime_avant(char *pathname, t_maillon **ptr_env)
+static int cd_empty(void)
 {
-	char *str_pwd;
-	char *str_pwd_old;
-	
-	printf("====================== AVANT ============================\n");
-	printf("Le path désiré: \n\t\t[ %s ]\n", pathname);
-	printf("\n");
-	printf("=========================================================\n");
-	printf("CWD:\n");
-	printf("\n");
-	pwd_builtin();
-	printf("\n");
-	
-	printf("=========================================================\n");
-	str_pwd = getenv("PWD");
-	str_pwd_old = getenv("OLDPWD");	
-	printf("PWD   : [ %s ]\n", str_pwd);
-	printf("OLDPWD: [ %s ]\n", str_pwd_old);
-	printf("\n");
-	printf("\n");
-	
+	write(1, CD_MSG_ERR_NO_ARG, ft_strlen(CD_MSG_ERR_NO_ARG));
+	write(1, "\n", 1);
+	write(1, "\n", 1);
+	return (CD_ERROR);
 }
 /* ************************************************************************** */
-static void imprime_apres(char *pathname, t_maillon **ptr_env)
+static int cd_point(char *pathname, t_maillon **ptr_env)
 {
-	char *str_pwd;
-	char *str_pwd_old;
+	char cwd[4096];
+	if (chdir(pathname) == CHDIR_ERROR)
+		return (manage_error(pathname));
+		
+	if(getcwd(cwd, 4096) == NULL)
+		return(manage_error(MSG_ERR_GETCWD));
+		
+	replace_env_oldpwd(ptr_env, cwd);
 	
-	printf("======================= APRES ===========================\n");
-	printf("chdir was executed\n");
-	if(chdir(pathname) == -1)
-		{
-			printf("chdir got an ERROR\n");
-			perror(NULL);
-			printf("chdir got an ERROR\n");
-			return;				
-		}
-	printf("\n");
-	printf("CWD:\n");
-	printf("\n");
-	pwd_builtin();
-	printf("\n");
-	printf("=========================================================\n");
-	str_pwd = getenv("PWD");
-	str_pwd_old = getenv("OLDPWD");	
-	printf("PWD   : [ %s ]\n", str_pwd);
-	printf("OLDPWD: [ %s ]\n", str_pwd_old);
-	printf("\n");
-	printf("=========================================================\n");
-	printf("\n");
-	printf("\n");
-	printf("\n");
-	
+	return (CD_NO_ERROR);	
 }
+/* ************************************************************************** */
+static int cd_other(char *pathname, t_maillon **ptr_env)
+{
+	char cwd[4096];
+	char oldcwd[4096];
+	
+	if(getcwd(oldcwd, 4096) == NULL)
+		return(manage_error(MSG_ERR_GETCWD));
+		
+	if (chdir(pathname) == CHDIR_ERROR)
+		return (manage_error(pathname));
+		
+	if(getcwd(cwd, 4096) == NULL)
+		return(manage_error(MSG_ERR_GETCWD));
+	
+	replace_env_oldpwd(ptr_env, oldcwd);
+	replace_env_pwd(ptr_env, cwd);
+
+	return (CD_NO_ERROR);	
+}
+
 /* ************************************************************************** */

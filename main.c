@@ -6,7 +6,7 @@
 /*   By: ski <ski@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 15:59:47 by ski               #+#    #+#             */
-/*   Updated: 2022/04/20 19:21:18 by ski              ###   ########.fr       */
+/*   Updated: 2022/04/20 19:48:51 by ski              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,81 +50,25 @@ int main (int argc, char **argv, char **envp)
 	maillon_oldpwd.var_env =  strdup(MSG_OLDPWD);
 	// ------------------------------------------------------- 
 
-	// print_maillon(&ptr_head);
-	// printf("\n");
-	// printf("\n");
+	printf("====================== AVANT ============================\n");
+	print_maillon(&ptr_head);
+	printf("\n");
 
 	char *pathname;
 	pathname = argv[1];
 	cd_builtin(pathname, &ptr_head);
 	
+	printf("======================= APRES ===========================\n");
+	print_maillon(&ptr_head);
+	printf("\n");
+	
 	// replace_env_pwd(&ptr_head, "ZOMBIE");
 	// replace_env_oldpwd(&ptr_head, "BANANE");
 	// print_maillon(&ptr_head);
 	// printf("\n");
-	// printf("\n");
-
-
-
-	
-
-		
+	// printf("\n");		
 	// ---------------------------------------------
 	return (0);
 }
 
 /* ************************************************************************** */
-
-
-
-
-
-
-
-
-
-
-	// printf("=========================================================\n");
-	// char *cd_path = argv[1];
-	// // char *cd_path = "..";
-	// printf("Le path désiré: \n\t\t[ %s ]\n", cd_path);
-	// printf("\n");
-	// printf("=========================================================\n");
-	// printf("CWD:\n");
-	// printf("\n");
-	// pwd_builtin();
-	// printf("\n");
-	
-	// printf("=========================================================\n");
-	// str_pwd = getenv("PWD");
-	// str_pwd_old = getenv("OLDPWD");	
-	// printf("PWD   : [ %s ]\n", str_pwd);
-	// printf("OLDPWD: [ %s ]\n", str_pwd_old);
-	// printf("\n");
-
-
-	// printf("=========================================================\n");
-	// printf("chdir was executed\n");
-	// if(chdir(cd_path) == -1)
-	// 	{
-	// 		printf("chdir got an ERROR\n");
-	// 		perror(NULL);
-	// 		printf("chdir got an ERROR\n");
-	// 		return (1);				
-	// 	}
-	// printf("\n");
-	// printf("CWD:\n");
-	// printf("\n");
-	// pwd_builtin();
-	// printf("\n");
-	// printf("=========================================================\n");
-	// str_pwd = getenv("PWD");
-	// str_pwd_old = getenv("OLDPWD");	
-	// printf("PWD   : [ %s ]\n", str_pwd);
-	// printf("OLDPWD: [ %s ]\n", str_pwd_old);
-	// printf("\n");
-	// printf("=========================================================\n");
-	// printf("\n");
-	// printf("\n");
-	// printf("\n");
-	// // envp_print(envp);	
