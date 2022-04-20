@@ -6,7 +6,7 @@
 /*   By: ski <ski@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 16:00:42 by ski               #+#    #+#             */
-/*   Updated: 2022/04/20 16:15:30 by ski              ###   ########.fr       */
+/*   Updated: 2022/04/20 17:31:29 by ski              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,9 @@ int		pwd_builtin(void);
 int		cd_builtin(char *pathname, t_maillon **ptr_head);
 
 /* ************************************************************************** */
-void	print_maillon(t_maillon **ptr_head);
+void		print_maillon(t_maillon **ptr_head);
+void		replace_pwd(t_maillon **ptr_env, char *new_pwd_path);
+t_maillon	**get_env_var_ptr(t_maillon **ptr_env, char *wished_var);
 
 
 /* ************************************************************************** */
