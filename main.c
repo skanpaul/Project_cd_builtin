@@ -6,7 +6,7 @@
 /*   By: ski <ski@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 15:59:47 by ski               #+#    #+#             */
-/*   Updated: 2022/04/20 17:34:36 by ski              ###   ########.fr       */
+/*   Updated: 2022/04/20 18:01:49 by ski              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ int main (int argc, char **argv, char **envp)
 	// pathname = argv[1];
 	// cd_builtin(pathname, &ptr_head);
 
-	replace_pwd(&ptr_head, "yyyyy");
+	replace_env_pwd(&ptr_head, "ZOMBIE");
+	replace_env_oldpwd(&ptr_head, "BANANE");
 	print_maillon(&ptr_head);
 	printf("\n");
 	printf("\n");

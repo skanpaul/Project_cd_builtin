@@ -6,11 +6,17 @@
 /*   By: ski <ski@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 14:35:13 by ski               #+#    #+#             */
-/*   Updated: 2022/04/20 17:35:19 by ski              ###   ########.fr       */
+/*   Updated: 2022/04/20 18:03:12 by ski              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
+/* ************************************************************************** */
+#define START_PWD		"PWD="
+#define START_OLDPWD	"OLDPWD="
+
+static void			replace_env_var(t_maillon **ptr_env, char *env_var, char *path);
+static t_maillon	**get_env_var_ptr(t_maillon **ptr_env, char *wished_var);
 /* ************************************************************************** */
 void print_maillon(t_maillon **ptr_head)
 {
@@ -25,24 +31,33 @@ void print_maillon(t_maillon **ptr_head)
 	}
 	printf("\n");
 }
+/* ************************************************************************** */
+void replace_env_pwd(t_maillon **ptr_env, char *new_path)
+{
+	replace_env_var(ptr_env, "PWD=", new_path);
+}
+/* ************************************************************************** */
+void replace_env_oldpwd(t_maillon **ptr_env, char *new_path)
+{
+	replace_env_var(ptr_env, "OLDPWD=", new_path);
+}
 
 /* ************************************************************************** */
-void replace_pwd(t_maillon **ptr_env, char *new_pwd_path)
+void replace_env_var(t_maillon **ptr_env, char *env_var, char *path)
 {
 	t_maillon **env_pwd;
 
-	env_pwd = get_env_var_ptr(ptr_env, "PWD=");
+	env_pwd = get_env_var_ptr(ptr_env, env_var);
+	
 	if (*env_pwd == NULL)
 	{
-		printf("[ PWD= ] n'existe pas\n");	
+		printf("[ %s ] n'existe pas\n", env_var);	
 	}
 	else
 	{
 		free((*env_pwd)->var_env);
-		(*env_pwd)->var_env = ft_strdup("SALUT XXXXXXX");
-	}
-	
-	
+		(*env_pwd)->var_env = ft_strjoin(env_var, path);
+	}	
 }
 
 /* ************************************************************************** */
