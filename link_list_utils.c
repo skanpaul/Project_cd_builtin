@@ -1,39 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd_builtin.c                                       :+:      :+:    :+:   */
+/*   link_list_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ski <ski@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/19 14:38:31 by ski               #+#    #+#             */
-/*   Updated: 2022/04/20 13:37:02 by ski              ###   ########.fr       */
+/*   Created: 2022/04/20 14:35:13 by ski               #+#    #+#             */
+/*   Updated: 2022/04/20 14:38:55 by ski              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 /* ************************************************************************** */
-
-/* ************************************************************************** */
-void cd_builtin(char *pathname, char **envp_minishell)
+void print_maillon(t_maillon **ptr_head)
 {
-	char *env_pwd;
-	char *env_oldpwd;
-	
-	
-	
-	// si: [cd . ]
-	// alors:
-	//		1) $OLDPWD = $PWD
+	t_maillon *temp;
 
+	temp = *ptr_head;
 
-	// si: [cd .. ]
-	// alors: 
-	//		1) $OLDPWD = $PWD
-	//		2) $PWD = parent directory
-	//		3) cwd = parent directory 
-
-	// si: 
-
+	while(temp != NULL)
+	{
+		printf("%s\n", temp->var_env);
+		temp = temp->next;		
+	}
 }
 
 /* ************************************************************************** */
