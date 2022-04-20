@@ -6,7 +6,7 @@
 /*   By: ski <ski@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:38:31 by ski               #+#    #+#             */
-/*   Updated: 2022/04/20 19:30:54 by ski              ###   ########.fr       */
+/*   Updated: 2022/04/20 19:43:43 by ski              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,14 @@
 #define CD_NO_ERROR		0
 #define CD_ERROR		-1
 #define CD_MSG_ERR_NO_ARG		"cd: need a relative or absolut path"
-#define CD_MSG_ERR_WRONG_DIR	"cd: no such file or directory: "
 /* ************************************************************************** */
 #define CHDIR_NO_ERROR	0
 #define CHDIR_ERROR		-1
-#define CHDIR_HOME		"/Users/ski"
 /* ************************************************************************** */
-static int manage_error(void);
+#define MSG_CHDIR				"chdir(): "
+#define MSG_GETCWD				"getcwd(): "
+/* ************************************************************************** */
+static int manage_error(char *remark);
 static void imprime_avant(char *pathname, t_maillon **ptr_env);
 static void imprime_apres(char *pathname, t_maillon **ptr_env);
 
@@ -50,10 +51,10 @@ int cd_builtin(char *pathname, t_maillon **ptr_env)
 	else if (ft_strncmp(pathname, ".", 2)  == 0)
 	{
 		if (chdir(pathname) == CHDIR_ERROR)
-			return (manage_error());
+			return (manage_error(MSG_CHDIR));
 			
 		if(getcwd(cwd, 4096) == NULL)
-			return(manage_error());
+			return(manage_error(MSG_GETCWD));
 		replace_env_oldpwd(ptr_env, cwd);
 	}
 
@@ -67,13 +68,13 @@ int cd_builtin(char *pathname, t_maillon **ptr_env)
 	else
 	{
 		if(getcwd(oldcwd, 4096) == NULL)
-			return(manage_error());
+			return(manage_error(MSG_GETCWD));
 			
 		if (chdir(pathname) == CHDIR_ERROR)
-			return (manage_error());
+			return (manage_error(MSG_CHDIR));
 			
 		if(getcwd(cwd, 4096) == NULL)
-			return(manage_error());
+			return(manage_error(MSG_GETCWD));
 		
 		replace_env_oldpwd(ptr_env, oldcwd);
 		replace_env_pwd(ptr_env, cwd);
@@ -88,9 +89,9 @@ int cd_builtin(char *pathname, t_maillon **ptr_env)
 }
 
 /* ************************************************************************** */
-static int manage_error(void)
+static int manage_error(char *remark)
 {
-	perror(NULL);
+	perror(remark);
 	printf("\n");
 	return (CD_ERROR);
 }
