@@ -1,32 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd_builtin.c                                       :+:      :+:    :+:   */
+/*   pwd_builtin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ski <ski@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:38:31 by ski               #+#    #+#             */
-/*   Updated: 2022/04/20 12:04:39 by ski              ###   ########.fr       */
+/*   Updated: 2022/04/19 16:19:46 by ski              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 /* ************************************************************************** */
-
+#define PWD_NO_ERROR	0
+#define PWD_ERROR		-1
+#define CWD_LEN			4096
 /* ************************************************************************** */
-void cd_builtin(char *pathname, char **envp_minishell)
+int pwd_builtin(void)
 {
-	// si: cd .  ==> alors: RIEN FAIRE
-
-
-	// si: cd ..
-	// alors: 
-	//		1) $OLDPWD = $PWD
-	//		2) $PWD = parent directory
-	//		3) cwd = parent directory 
-
-	// si: 
-
+	char	cwd_name[CWD_LEN];
+	
+	if (getcwd(cwd_name, CWD_LEN) == NULL)	
+		return (PWD_ERROR);
+	else
+	{
+		write(1, cwd_name, strlen(cwd_name));
+		write(1, "\n", 1);
+	}
+	
+	return (PWD_NO_ERROR);
 }
 
 /* ************************************************************************** */

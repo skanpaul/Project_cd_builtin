@@ -6,7 +6,7 @@
 /*   By: ski <ski@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 16:00:42 by ski               #+#    #+#             */
-/*   Updated: 2022/04/20 10:21:52 by ski              ###   ########.fr       */
+/*   Updated: 2022/04/20 11:21:31 by ski              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ typedef struct s_data
 bool	is_parent(pid_t fk_pid);
 /* ************************************************************************** */
 int		pwd_builtin(void);
+void	ft_putstr(char *str);
+void	ft_putendl(char *str);
+void	ft_putstr_fd(char *str, int fd);
 /* ************************************************************************** */
 void	envp_print(char **envp);
 int		envp_get_size(char **envp);
