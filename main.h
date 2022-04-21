@@ -6,7 +6,7 @@
 /*   By: ski <ski@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 16:00:42 by ski               #+#    #+#             */
-/*   Updated: 2022/04/20 20:15:11 by ski              ###   ########.fr       */
+/*   Updated: 2022/04/21 15:44:10 by ski              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,25 @@
 /* ************************************************************************** */
 # define FORK_CHILD		0
 # define FORK_ERROR		-1
+
+#define CD_NO_ERROR		0
+#define CD_ERROR		-1
+#define CD_MSG_ERR_NO_ARG		"cd: need a relative or absolut path"
 /* ************************************************************************** */
-typedef struct s_maillon t_maillon;
+#define CHDIR_NO_ERROR	0
+#define CHDIR_ERROR		-1
 /* ************************************************************************** */
-typedef struct s_maillon
+#define MSG_ERR_GETCWD	"getcwd() "
+
+#define CWD_BUF_SIZE	4096
+
+/* ************************************************************************** */
+typedef struct	s_env
 {
-	char		*var_env;
-	t_maillon	*prev;
-	t_maillon	*next;
-}	t_maillon;
+	char			*name;
+	char			*data;
+	struct s_env	*next;
+}	t_env;
 /* ************************************************************************** */
 typedef struct s_data
 {
@@ -46,12 +56,12 @@ typedef struct s_data
 }	t_data;
 /* ************************************************************************** */
 int		pwd_builtin(void);
-int		cd_builtin(char *pathname, t_maillon **ptr_head);
+int		cd_builtin(char *pathname, t_env **ptr_head);
 
 /* ************************************************************************** */
-void	print_maillon(t_maillon **ptr_head);
-void	replace_env_pwd(t_maillon **ptr_env, char *new_path);
-void	replace_env_oldpwd(t_maillon **ptr_env, char *new_path);
+void	print_maillon(t_env **ptr_head);
+void	replace_env_pwd(t_env **ptr_env, char *new_path);
+void	replace_env_oldpwd(t_env **ptr_env, char *new_path);
 /* ************************************************************************** */
 void	envp_print(char **envp);
 int		envp_get_size(char **envp);
